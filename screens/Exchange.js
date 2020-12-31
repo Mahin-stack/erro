@@ -8,24 +8,38 @@ export default class Exchange extends Component{
 
   constructor(){
     super()
-    this.state={
-    userName : firebase.auth().currentUser.email,
-    itemName : "",
-    description : ""  
-}
-}
-addItem=(itemName, description)=>{
-var userName= this.state.userName
-db.collection('exchange_requests').add({
-   "username"    : userName,
-  "item_name"   : itemName,
-  "description" : description
-})
-this.setState({
-  itemName : '',
-  description :''
-})
-return Alert.alert(
+    this.state = {
+      userName : firebase.auth().currentUser.email,
+      itemName : "",
+      description : ""
+    }
+  }
+
+  addItem=(itemName, description)=>{
+    var userName = this.state.userName
+    db.collection("exchange_requests").add({
+      "username"    : userName,
+      "item_name"   : itemName,
+      "description" : description
+     })
+     this.setState({
+       itemName : '',
+       description :''
+     })
+
+     this.setState({
+       itemName : '',
+       description :''
+     })
+
+     // NOTE: Comment below return statement when you test the app in ios
+     // ToastAndroid.showWithGravityAndOffset('Item ready to exchange',
+     //    ToastAndroid.SHORT,
+     //  );
+     // return this.props.navigation.navigate('HomeScreen')
+
+     // NOTE:  Comment the below return statement when you test the app in android
+     return Alert.alert(
           'Item ready to exchange',
           '',
           [
@@ -35,25 +49,27 @@ return Alert.alert(
             }}
           ]
       );
-}
-render(){
-  return(
-    <View style={{flex:1}}>
+  }
+
+
+
+  render(){
+    return(
+      <View style={{flex:1}}>
       <MyHeader title="Add Item"/>
       <KeyboardAvoidingView style={{flex:1,justifyContent:'center', alignItems:'center'}}>
-      <TextInput
-      style={styles.formTextInput}
-      placeholder ={"Item Name"}
-      maxLength ={12}
-      onChangeText={(text)=>{
-        this.setState({
-          itemName: text
-        })
-      }}
-      value={this.state.itemName}
-      
-      />
-<TextInput
+        <TextInput
+          style={styles.formTextInput}
+          placeholder ={"Item Name"}
+          maxLength ={8}
+          onChangeText={(text)=>{
+            this.setState({
+              itemName: text
+            })
+          }}
+          value={this.state.itemName}
+        />
+        <TextInput
           multiline
           numberOfLines={4}
           style={[styles.formTextInput,{height:100}]}
@@ -66,21 +82,18 @@ render(){
           value={this.state.description}
 
         />
-
         <TouchableOpacity
-        style={[styles.button,{marginTop:10}]}
-        onPress={()=>{
-          this.addItem(this.state.itemName, this.state.description)
-        }}
-        >
+          style={[styles.button,{marginTop:10}]}
+          onPress = {()=>{this.addItem(this.state.itemName, this.state.description)}}
+          >
           <Text style={{color:'#ffff', fontSize:18, fontWeight:'bold'}}>Add Item</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
-  </View>
-  )
+      </View>
+    )
+  }
 }
 
-}
 
 const styles = StyleSheet.create({
   formTextInput:{
